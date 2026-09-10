@@ -157,7 +157,7 @@ async def predict(file: UploadFile = File(...)):
 
     # Perform model inference
     try:
-        raw_predictions = model.predict(input_batch)
+        raw_predictions = model.predict(input_batch, verbose=0)
         probabilities = raw_predictions[0]
         predicted_idx = int(np.argmax(probabilities))
         confidence = float(probabilities[predicted_idx])
