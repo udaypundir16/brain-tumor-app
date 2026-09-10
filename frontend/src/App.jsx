@@ -8,6 +8,8 @@ import AboutModal from './components/AboutModal';
 import Footer from './components/Footer';
 import './App.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 export default function App() {
   // Theme state: dark | light (default from localStorage or system preference)
   const [theme, setTheme] = useState(() => {
@@ -36,7 +38,7 @@ export default function App() {
     let isMounted = true;
     const checkBackend = async () => {
       try {
-        const res = await fetch('http://localhost:8000/health');
+        const res = await fetch(`${API_BASE_URL}/health`);
         if (res.ok && isMounted) {
           setModelStatus('online');
         } else if (isMounted) {
@@ -137,7 +139,7 @@ export default function App() {
     formData.append('file', selectedFile);
 
     try {
-      const response = await fetch('http://localhost:8000/predict', {
+      const response = await fetch(`${API_BASE_URL}/predict`, {
         method: 'POST',
         body: formData,
       });
@@ -172,7 +174,7 @@ export default function App() {
     } catch (err) {
       if (err.name === 'TypeError' && err.message.toLowerCase().includes('fetch')) {
         setError(
-          'Unable to connect to the AI server. Please make sure the FastAPI backend is running on http://localhost:8000.'
+          `Unable to connect to the AI server (${API_BASE_URL}). Please make sure the backend is running and reachable.`
         );
       } else {
         setError(err.message || 'An unexpected error occurred during prediction.');
