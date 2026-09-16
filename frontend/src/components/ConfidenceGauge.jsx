@@ -4,8 +4,6 @@ export default function ConfidenceGauge({ confidence }) {
   const [animatedValue, setAnimatedValue] = useState(0);
 
   useEffect(() => {
-    // Reset to 0 then animate to target
-    setAnimatedValue(0);
     const target = Math.min(100, Math.max(0, confidence * 100));
     
     const duration = 900; // ms

@@ -8,8 +8,6 @@ export default function ProbabilityBar({
   const [animatedWidth, setAnimatedWidth] = useState(0);
 
   useEffect(() => {
-    // Reset to 0 and expand to target percentage
-    setAnimatedWidth(0);
     const targetPercent = Math.min(100, Math.max(0, probability * 100));
     const timer = setTimeout(() => {
       setAnimatedWidth(targetPercent);

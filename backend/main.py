@@ -79,8 +79,9 @@ app = FastAPI(
 )
 
 # Configure CORS
-frontend_origin = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173")
-allowed_origins = [origin.strip() for origin in frontend_origin.split(",") if origin.strip()] or ["http://localhost:5173"]
+default_origins = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:3000,http://127.0.0.1:3000"
+frontend_origin = os.getenv("FRONTEND_ORIGIN", default_origins)
+allowed_origins = [origin.strip() for origin in frontend_origin.split(",") if origin.strip()]
 
 app.add_middleware(
     CORSMiddleware,
@@ -145,9 +146,10 @@ async def predict(file: UploadFile = File(...)):
         )
 
     # Prepare image array for prediction
+    # EfficientNet has built-in Rescaling(1./255) and Normalization layers.
+    # Passing raw [0, 255] float32 values is required to prevent near-zero double normalization.
     try:
         img_array = np.array(image, dtype=np.float32)
-        img_array = img_array / 255.0
         input_batch = np.expand_dims(img_array, axis=0)
     except Exception as e:
         raise HTTPException(

@@ -1,4 +1,4 @@
-export default function Hero({ modelStatus = 'online', onStartAnalysis }) {
+export default function Hero({ modelStatus = 'online' }) {
   return (
     <section className="hero-section">
       {/* Background Animated Gradient Orbs */}
